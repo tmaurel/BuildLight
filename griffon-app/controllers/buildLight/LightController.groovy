@@ -4,7 +4,7 @@ package buildLight
 import java.awt.event.ActionListener
 import java.awt.Window
 import javax.swing.JOptionPane
-import buildLight.constants.BuildStatus
+//import buildLight.constants.BuildStatus
 import buildLight.constants.LightColor
 
 
@@ -21,6 +21,7 @@ class LightController {
 
         if(opened) {
 
+/*
             startTimer(1000, false, {
                 updateLight(BuildStatus.SUCCESS)
             })
@@ -38,7 +39,7 @@ class LightController {
                 doLater {
                     view.waitBox.hide()
                 }
-            })
+            })*/
         }
         else {
             edt {
@@ -49,35 +50,6 @@ class LightController {
             }
         }
 
-    }
-
-    def updateLight(BuildStatus status) {
-        switch(status) {
-            case BuildStatus.BUILDING:
-                shutdownLights()
-                if(model.flashOnBuild) {
-                    lightService.turnFlashOn LightColor.YELLOW, model.intensity
-                }
-                else {
-                    lightService.turnLightOn LightColor.YELLOW, model.intensity
-                }
-            break;
-            case BuildStatus.SUCCESS:
-                shutdownLights()
-                lightService.turnLightOn LightColor.GREEN, model.intensity
-            break;
-            case BuildStatus.FAILURE:
-                shutdownLights()
-                lightService.turnLightOn LightColor.RED, model.intensity
-            break;
-        }
-    }
-
-    def shutdownLights() {
-        lightService.turnLightOff LightColor.GREEN
-        lightService.turnLightOff LightColor.YELLOW
-        lightService.turnFlashOff LightColor.YELLOW
-        lightService.turnLightOff LightColor.RED
     }
 
     def deviceNotFound() {
