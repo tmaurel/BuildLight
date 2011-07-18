@@ -1,6 +1,6 @@
 package buildLight.server
 
-import buildLight.BuildConstants.BuildStatus
+import buildLight.constants.BuildStatus
 
 public interface ICIServer {
 

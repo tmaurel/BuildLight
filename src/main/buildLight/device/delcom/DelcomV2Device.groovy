@@ -1,7 +1,7 @@
 package buildLight.device.delcom
 
-import buildLight.BuildConstants.LightColor
-import buildLight.BuildConstants.LightCommand
+import buildLight.constants.LightColor
+import buildLight.constants.LightCommand
 import buildLight.device.IDevice
 import buildLight.device.hid.HIDLink
 import buildLight.device.hid.HIDLinkFactory

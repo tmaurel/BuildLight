@@ -1,6 +1,6 @@
 package buildLight.device
 
-import buildLight.BuildConstants.LightDevice
+import buildLight.constants.LightDevice
 import buildLight.device.delcom.DelcomV2Device
 
 class DeviceFactory {

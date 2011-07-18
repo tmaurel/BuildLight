@@ -1,6 +1,6 @@
 package buildLight.server
 
-import buildLight.BuildConstants.ServerType
+import buildLight.constants.ServerType
 import buildLight.server.hudson.HudsonServer
 
 class CIServerFactory {

@@ -3,7 +3,7 @@ package buildLight
 
 import javax.swing.JOptionPane
 import javax.swing.JSlider
-import buildLight.BuildConstants.LightDevice
+import buildLight.constants.LightDevice
 import buildLight.views.JCenteredDialog
 import java.awt.Color
 import javax.swing.BorderFactory

@@ -1,6 +1,6 @@
 package buildLight.server.hudson
 
-import buildLight.BuildConstants.BuildStatus
+import buildLight.constants.BuildStatus
 import buildLight.server.ICIServer
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder

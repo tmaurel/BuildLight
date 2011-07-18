@@ -1,8 +1,8 @@
 package buildLight
 
 import javax.swing.JFrame
-import javax.swing.JOptionPane
-import buildLight.BuildConstants.BuildStatus
+
+import buildLight.constants.BuildStatus
 import java.awt.Color
 
 def mainFrame = application(title: 'BuildLight',

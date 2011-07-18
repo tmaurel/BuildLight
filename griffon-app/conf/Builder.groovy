@@ -14,3 +14,5 @@ root.'I18nGriffonAddon'.addon=true
 
 
 
+
+root.'RestGriffonAddon'.addon=true

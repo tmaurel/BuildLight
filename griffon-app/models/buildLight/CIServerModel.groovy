@@ -1,7 +1,7 @@
 package buildLight
 
 import groovy.beans.Bindable
-import buildLight.BuildConstants.ServerType
+import buildLight.constants.ServerType
 
 class CIServerModel {
 

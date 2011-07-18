@@ -1,7 +1,7 @@
 package buildLight
 
+import buildLight.constants.ServerType
 import buildLight.server.ICIServer
-import buildLight.BuildConstants.ServerType
 import buildLight.server.CIServerFactory
 
 class CIServerService {

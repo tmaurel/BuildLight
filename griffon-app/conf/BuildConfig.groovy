@@ -124,9 +124,9 @@ griffon.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         compile "commons-lang:commons-lang:2.6"
-        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
-            excludes 'commons-logging', 'xml-apis', 'groovy', 'log4j'
-        }
+//        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
+//            excludes 'commons-logging', 'xml-apis', 'groovy', 'log4j'
+//        }
         //compile "net.java.dev.jna:jna:3.3.0"
         //compile "org.swinglabs:swingx:1.6.1"
         //compile group:"net.java.dev.jna", name:"jna", version:"3.3.0", classifier:"platform"

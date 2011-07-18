@@ -1,7 +1,6 @@
 package buildLight
 
-import javax.swing.JSlider
-import buildLight.BuildConstants.ServerType
+import buildLight.constants.ServerType
 import buildLight.views.JCenteredDialog
 import javax.swing.JOptionPane
 import javax.swing.BorderFactory

@@ -2,10 +2,11 @@ package buildLight
 
 
 import java.awt.event.ActionListener
-import buildLight.BuildConstants.LightColor
 import java.awt.Window
 import javax.swing.JOptionPane
-import buildLight.BuildConstants.BuildStatus
+import buildLight.constants.BuildStatus
+import buildLight.constants.LightColor
+
 
 class LightController {
 
@@ -79,8 +80,6 @@ class LightController {
         lightService.turnLightOff LightColor.RED
     }
 
-
-
     def deviceNotFound() {
         JOptionPane.showMessageDialog(Window.windows.find{it.focused},
             app.i18n.getMessage('buildLight.settings.light.not.found'), app.i18n.getMessage('buildLight.settings.light.not.found'),
@@ -97,10 +96,8 @@ class LightController {
         timer.start()
     }
 
-
     void mvcGroupDestroy() {
         lightService.closeDevice()
     }
-
 
 }

@@ -1,9 +1,9 @@
 package buildLight
 
-import buildLight.BuildConstants.LightColor
-import buildLight.device.IDevice
-import buildLight.BuildConstants.LightDevice
+import buildLight.constants.LightColor
+import buildLight.constants.LightDevice
 import buildLight.device.DeviceFactory
+import buildLight.device.IDevice
 
 class LightService {
 

@@ -1,7 +1,7 @@
 package buildLight.device.delcom
 
-import buildLight.BuildConstants.LightCommand
-import buildLight.BuildConstants.LightColor
+import buildLight.constants.LightCommand
+import buildLight.constants.LightColor
 
 class DelcomV2Packet {
 

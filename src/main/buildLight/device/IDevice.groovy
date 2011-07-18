@@ -1,6 +1,6 @@
 package buildLight.device
 
-import buildLight.BuildConstants.LightColor
+import buildLight.constants.LightColor
 
 interface IDevice {
 

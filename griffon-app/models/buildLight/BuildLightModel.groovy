@@ -1,7 +1,8 @@
 package buildLight
 
 import groovy.beans.Bindable
-import buildLight.BuildConstants.BuildStatus
+
+import buildLight.constants.BuildStatus
 
 class BuildLightModel {
 
