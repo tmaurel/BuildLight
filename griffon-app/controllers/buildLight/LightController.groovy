@@ -28,7 +28,7 @@ class LightController {
     }
 
     def preview = {
-        initDevice()
+        initDevice(null, null)
         if (lightService.isOpened()) {
 
             TimerFactory.createTimer(1000, false, {

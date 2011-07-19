@@ -19,7 +19,9 @@ class CIServerController {
 
         try {
             def lastBuildStatus = cIServerService.lastBuildStatus
+
             if(successCallback) {
+                println successCallback
                 successCallback(lastBuildStatus)
             }
         }
@@ -36,20 +38,16 @@ class CIServerController {
     }
 
     def test = { successCallback, failureCallback ->
-
-        initServer( {
-            successCallback()
-        }, {
-            failureCallback()
-        })
+        initServer(successCallback, failureCallback)
     }
 
     def updateLight = { currentStatus, failureCallback ->
         def lightController = app.controllers.Light
+        def mainController = app.controllers.BuildLight
         try {
             def status = cIServerService.lastBuildStatus
             lightController.updateLight(currentStatus, status)
-            model.currentStatus = status
+            mainController.setCurrentStatus(status)
         }
         catch (CIServerNotFound e) {
             failureCallback()
@@ -57,6 +55,7 @@ class CIServerController {
     }
 
     def serverFound(status) {
+        println " OKOKOKOKOKOK"
         doLater {
             JOptionPane.showMessageDialog(Window.windows.find {it.focused},
                     app.i18n.getMessage('buildLight.settings.server.found.with.status', [app.i18n.getMessage("buildLight.current.status.$status")]), app.i18n.getMessage('buildLight.settings.server.found'),

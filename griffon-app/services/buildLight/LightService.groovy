@@ -16,6 +16,7 @@ class LightService {
     }
 
     def closeDevice() {
+        log.info("Closing device {}", [this.device].toArray())
         if (isOpened()) {
             this.device?.close()
         }

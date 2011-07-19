@@ -38,16 +38,16 @@ class BuildLightController {
 
         ciServerController.initServer( null, {
            ciServerController.serverNotFound()
+           ok = false
            doLater {
-               ok = false
                stop()
            }
         })
 
         lightController.initDevice( null, {
             lightController.deviceNotFound()
+            ok = false
             doLater {
-                ok = false
                 stop()
             }
         })
@@ -74,5 +74,9 @@ class BuildLightController {
         lightController.closeDevice()
         model.currentStatus = BuildStatus.UNKNOWN
         currentTimer?.stop()
+    }
+
+    def setCurrentStatus(status) {
+        model.currentStatus = status
     }
 }

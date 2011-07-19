@@ -10,17 +10,20 @@ testServerAction = action(
             def waitbox = view.waitBox
             waitbox.pack()
             doOutside {
-                controller.test({ status ->
-                    edt {
-                        waitBox.hide()
+                controller.test(
+                    { status ->
+                        println "TITITITITT : " + status
+                        edt {
+                            waitBox.hide()
+                        }
+                        controller.serverFound(status)
+                    }, {
+                        edt {
+                            waitBox.hide()
+                        }
+                        controller.serverNotFound()
                     }
-                    controller.serverFound(status)
-                }, {
-                    edt {
-                        waitBox.hide()
-                    }
-                    controller.serverNotFound()
-                })
+                )
             }
             waitbox.show()
         },
