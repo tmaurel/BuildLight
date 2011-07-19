@@ -55,21 +55,31 @@ class BuildLightController {
             }
         })
 
+        def disableFrom = format.parse(model.disableFrom)
+        def disableUntil = format.parse(model.disableUntil)
+        if(disableUntil.before(disableFrom)) {
+            disableUntil += 1
+        }
+
+        def disabled = false
+
         if (ok) {
             currentTimer = TimerFactory.createTimer(ciServerController.frequencyInMilliseconds, 0, true, {
                 execOutside {
 
                     def currentDate = new Date()
-                    def disableFrom = format.parse(model.disableFrom)
-                    def disableUntil = format.parse(model.disableUntil)
-                    if(disableUntil.before(disableFrom)) {
-                        disableUntil = disableUntil + 1
-                    }
 
                     if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
+                        disabled = true
                         log.info("Light disabled during this time range (From {}, until {})", [disableFrom, disableUntil].toArray())
                     }
                     else {
+                        if(disabled) {
+                            disableFrom += 1
+                            disableUntil += 1
+                            disabled = false
+                        }
+
                         ciServerController.updateLight(model.currentStatus, {
                             ciServerController.serverNotFound()
                             stop()
