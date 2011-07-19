@@ -1,8 +1,9 @@
 package buildLight
 
 import buildLight.constants.ServerType
-import buildLight.server.ICIServer
 import buildLight.server.CIServerFactory
+import buildLight.server.ICIServer
+import java.awt.event.ActionListener
 
 class CIServerService {
 
@@ -20,4 +21,5 @@ class CIServerService {
     def getLastBuildStatus() {
         this.server.lastBuildStatus
     }
+
 }

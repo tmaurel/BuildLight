@@ -20,10 +20,10 @@ class DelcomV2Device implements IDevice {
         boolean opened = hidLink?.isOpened()
 
         if (!opened) {
-           opened = hidLink?.getHIDHandle()
+            opened = hidLink?.getHIDHandle()
         }
 
-        if(opened) {
+        if (opened) {
             power(LightColor.GREEN, 0)
             power(LightColor.RED, 0)
             power(LightColor.YELLOW, 0)

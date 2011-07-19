@@ -1,7 +1,7 @@
 package buildLight
 
-import groovy.beans.Bindable
 import buildLight.constants.LightDevice
+import groovy.beans.Bindable
 
 class LightModel {
 

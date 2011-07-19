@@ -1,11 +1,10 @@
-
 ciServer {
     serverType = "HUDSON"
     projectUrl = ""
     needAuth = false
     userName = ""
     password = ""
-    frequency = 30
+    frequency = 5
 }
 
 light {

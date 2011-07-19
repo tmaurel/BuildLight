@@ -7,10 +7,10 @@ class CIServerFactory {
 
     def static ICIServer newServer(ServerType type) {
         ICIServer instance = null
-        switch(type) {
+        switch (type) {
             case ServerType.HUDSON:
                 instance = new HudsonServer();
-            break
+                break
         }
         instance
     }

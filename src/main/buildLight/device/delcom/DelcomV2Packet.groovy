@@ -1,7 +1,7 @@
 package buildLight.device.delcom
 
-import buildLight.constants.LightCommand
 import buildLight.constants.LightColor
+import buildLight.constants.LightCommand
 
 class DelcomV2Packet {
 
@@ -20,127 +20,127 @@ class DelcomV2Packet {
 
     private byte getByteForMajorCommand() {
         byte majorByte
-        switch(this.command) {
+        switch (this.command) {
             case LightCommand.GETINFOS:
                 majorByte = (byte) 104
-            break
+                break
 
             default:
                 majorByte = (byte) 101
-            break
+                break
         }
         majorByte
     }
 
     private byte getByteForMinorCommand() {
         byte minorByte
-        switch(this.command) {
+        switch (this.command) {
             case LightCommand.FLASHOFF:
             case LightCommand.FLASHON:
                 minorByte = (byte) 20
-            break
+                break
 
             case LightCommand.CHANGEPOWER:
                 minorByte = (byte) 34
-            break
+                break
 
             case LightCommand.TURNON:
             case LightCommand.TURNOFF:
                 minorByte = (byte) 12
-            break
+                break
 
             case LightCommand.GETINFOS:
             default:
                 minorByte = (byte) 0
-            break
+                break
         }
         minorByte
     }
 
     private byte getByteForDataLSB() {
         byte lsb
-        switch(this.command) {
+        switch (this.command) {
             case LightCommand.FLASHOFF:
             case LightCommand.TURNON:
                 lsb = this.getLedColorByteForPowerOn()
-            break
+                break
 
             case LightCommand.FLASHON:
             case LightCommand.TURNOFF:
                 lsb = (byte) 0
-            break
+                break
 
             case LightCommand.CHANGEPOWER:
                 lsb = this.getLedColorByteForPowerChange()
-            break
+                break
 
             case LightCommand.GETINFOS:
             default:
                 lsb = (byte) 0
-            break
+                break
         }
         lsb
     }
 
     private byte getByteForDataMSB() {
         byte msb
-        switch(this.command) {
+        switch (this.command) {
             case LightCommand.FLASHOFF:
             case LightCommand.TURNON:
                 msb = (byte) 0
-            break
+                break
 
             case LightCommand.FLASHON:
             case LightCommand.TURNOFF:
                 msb = this.getLedColorByteForPowerOn();
-            break;
+                break;
 
             case LightCommand.CHANGEPOWER:
                 msb = (byte) this.power;
-            break;
+                break;
 
             case LightCommand.GETINFOS:
             default:
                 msb = (byte) 0;
-            break;
+                break;
         }
         msb
     }
 
     private byte getLedColorByteForPowerChange() {
         byte colorByte
-        switch(this.color) {
+        switch (this.color) {
             case LightColor.GREEN:
                 colorByte = (byte) 0
-            break
+                break
 
             case LightColor.RED:
                 colorByte = (byte) 1
-            break
+                break
 
             case LightColor.YELLOW:
             default:
                 colorByte = (byte) 2
-            break
+                break
         }
         colorByte
     }
 
     private byte getLedColorByteForPowerOn() {
         byte colorByte
-        switch(this.color) {
+        switch (this.color) {
             case LightColor.GREEN:
                 colorByte = (byte) 1
-            break
+                break
 
             case LightColor.RED:
                 colorByte = (byte) 2
-            break
+                break
 
             case LightColor.YELLOW:
             default:
                 colorByte = (byte) 4
-            break
+                break
         }
         colorByte
     }

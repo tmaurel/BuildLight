@@ -7,8 +7,8 @@ environments {
                 keystore = "${basedir}/griffon-app/conf/keys/devKeystore"
                 alias = 'development'
                 storepass = 'BadStorePassword'
-                keypass   = 'BadKeyPassword'
-                lazy      = true // only sign when unsigned
+                keypass = 'BadKeyPassword'
+                lazy = true // only sign when unsigned
             }
         }
 
@@ -96,7 +96,7 @@ signingkey {
         alias = env
         // storepass = 'BadStorePassword'
         // keypass   = 'BadKeyPassword'
-        lazy      = true // only sign when unsigned
+        lazy = true // only sign when unsigned
     }
 }
 
@@ -125,8 +125,8 @@ griffon.project.dependency.resolution = {
 
         compile "commons-lang:commons-lang:2.6"
 //        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
-//            excludes 'commons-logging', 'xml-apis', 'groovy', 'log4j'
-//        }
+        //            excludes 'commons-logging', 'xml-apis', 'groovy', 'log4j'
+        //        }
         //compile "net.java.dev.jna:jna:3.3.0"
         //compile "org.swinglabs:swingx:1.6.1"
         //compile group:"net.java.dev.jna", name:"jna", version:"3.3.0", classifier:"platform"
@@ -140,7 +140,7 @@ log4j = {
         console name: 'stdout', layout: pattern(conversionPattern: '%d [%t] %-5p %c - %m%n')
     }
 
-    error  'org.codehaus.griffon'
+    error 'org.codehaus.griffon'
 }
 
 griffon {

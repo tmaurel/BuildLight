@@ -1,5 +1,9 @@
 package buildLight
 
+import buildLight.server.ICIServer.CIServerNotFound
+import buildLight.timer.TimerFactory
+import buildLight.constants.BuildStatus
+
 class BuildLightController {
     // these will be injected by Griffon
     def model
@@ -7,9 +11,8 @@ class BuildLightController {
     def actions
 
     def settingsService
-    def lightService
-    def cIServerService
 
+    def currentTimer
 
     void mvcGroupDestroy() {
         destroyMVCGroup('CIServer')
@@ -23,17 +26,54 @@ class BuildLightController {
     */
 
     def start() {
+
+        boolean ok = true
+
         view.tabs.selectedIndex = 0
         view.tabs.setEnabledAt(1, false)
         view.tabs.setEnabledAt(2, false)
         view.startButon.action = actions.stopAction
 
+        def lightController = app.controllers.Light
+        def ciServerController = app.controllers.CIServer
+
+        ciServerController.initServer( null, {
+           ciServerController.serverNotFound()
+           doLater {
+               ok = false
+               stop()
+           }
+        })
+
+        lightController.initDevice( null, {
+            lightController.deviceNotFound()
+            doLater {
+                ok = false
+                stop()
+            }
+        })
+
+        if (ok) {
+            currentTimer = TimerFactory.createTimer(ciServerController.frequencyInMilliseconds, 0, true, {
+                execOutside {
+                    ciServerController.updateLight(model.currentStatus, {
+                        ciServerController.serverNotFound()
+                        stop()
+                    })
+                }
+            })
+        }
     }
 
-
     def stop() {
-        view.tabs.setEnabledAt(1, true)
-        view.tabs.setEnabledAt(2, true)
-        view.startButon.action = actions.startAction
+        def lightController = app.controllers.Light
+        edt {
+            view.tabs.setEnabledAt(1, true)
+            view.tabs.setEnabledAt(2, true)
+            view.startButon.action = actions.startAction
+        }
+        lightController.closeDevice()
+        model.currentStatus = BuildStatus.UNKNOWN
+        currentTimer?.stop()
     }
 }

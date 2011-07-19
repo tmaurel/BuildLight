@@ -7,12 +7,12 @@ root {
         view = '*'
     }
 }
-root.'MiglayoutGriffonAddon'.addon=true
+root.'MiglayoutGriffonAddon'.addon = true
 
 
-root.'I18nGriffonAddon'.addon=true
+root.'I18nGriffonAddon'.addon = true
 
 
 
 
-root.'RestGriffonAddon'.addon=true
+root.'RestGriffonAddon'.addon = true

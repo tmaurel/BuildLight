@@ -2,17 +2,18 @@ package buildLight.device.hid;
 
 public interface HIDLink {
 
-    public void SetVendorID(short VendorID);
+    public void SetVendorID(short VendorID)
 
-    public void SetProductID(short ProductID);
+    public void SetProductID(short ProductID)
 
-    public boolean getHIDHandle();
+    public boolean getHIDHandle()
 
-    public boolean isOpened();
+    public boolean isOpened()
 
-    public void CloseHIDDevice();
+    public void CloseHIDDevice()
 
-    public byte SetFeatureReport(byte[] buffer, short buffersize);
+    public byte SetFeatureReport(byte[] buffer, short buffersize)
 
-    public byte GetFeatureReport(byte[] buffer);
+    public byte GetFeatureReport(byte[] buffer)
+
 }

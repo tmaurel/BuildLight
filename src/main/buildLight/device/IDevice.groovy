@@ -10,12 +10,12 @@ interface IDevice {
 
     void close()
 
-    def turnOn(LightColor color, int intensity);
+    def turnOn(LightColor color, int intensity)
 
-    def turnOff(LightColor color);
+    def turnOff(LightColor color)
 
-    def flashOn(LightColor color, int intensity);
+    def flashOn(LightColor color, int intensity)
 
-    def flashOff(LightColor color);
+    def flashOff(LightColor color)
 
 }

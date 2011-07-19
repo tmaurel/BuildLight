@@ -1,6 +1,6 @@
 package buildLight
 
-import griffon.test.*
+import griffon.test.GriffonUnitTestCase
 
 class SettingsServiceTests extends GriffonUnitTestCase {
     protected void setUp() {

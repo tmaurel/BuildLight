@@ -1,12 +1,11 @@
 package buildLight
 
-
-import java.awt.event.ActionListener
-import java.awt.Window
-import javax.swing.JOptionPane
-//import buildLight.constants.BuildStatus
+import buildLight.constants.BuildStatus
 import buildLight.constants.LightColor
-
+import java.awt.Window
+import java.awt.event.ActionListener
+import javax.swing.JOptionPane
+import buildLight.timer.TimerFactory
 
 class LightController {
 
@@ -15,31 +14,41 @@ class LightController {
 
     def lightService
 
+    def initDevice = { successCallback, failureCallback ->
+        def opened = lightService.initDevice(model.device)
+        if(!opened && failureCallback) {
+            failureCallback()
+        } else if(successCallback) {
+            successCallback()
+        }
+    }
+
+    def closeDevice = {
+        lightService.closeDevice()
+    }
+
     def preview = {
+        initDevice()
+        if (lightService.isOpened()) {
 
-        def opened = lightService.initDevice model.device
-
-        if(opened) {
-
-/*
-            startTimer(1000, false, {
-                updateLight(BuildStatus.SUCCESS)
+            TimerFactory.createTimer(1000, false, {
+                updateLight(BuildStatus.UNKNOWN, BuildStatus.SUCCESS)
             })
 
-            startTimer(4000, false, {
-                updateLight(BuildStatus.BUILDING)
+            TimerFactory.createTimer(4000, false, {
+                updateLight(BuildStatus.SUCCESS, BuildStatus.BUILDING)
             })
 
-            startTimer(7000, false, {
-                updateLight(BuildStatus.FAILURE)
+            TimerFactory.createTimer(7000, false, {
+                updateLight(BuildStatus.BUILDING, BuildStatus.FAILURE)
             })
 
-            startTimer(10000, false, {
+            TimerFactory.createTimer(10000, false, {
                 lightService.closeDevice()
                 doLater {
                     view.waitBox.hide()
                 }
-            })*/
+            })
         }
         else {
             edt {
@@ -49,27 +58,56 @@ class LightController {
                 deviceNotFound()
             }
         }
+    }
 
+    def updateLight(BuildStatus previousStatus, BuildStatus newStatus) {
+        switch (newStatus) {
+            case BuildStatus.BUILDING:
+                if(!previousStatus.equals(newStatus)) {
+                    shutdownLights()
+                    if (model.flashOnBuild) {
+                        lightService.flashLightOn LightColor.YELLOW, model.intensity
+                    }
+                    else {
+                        lightService.turnLightOn LightColor.YELLOW, model.intensity
+                    }
+                }
+                break;
+            case BuildStatus.SUCCESS:
+                if(!previousStatus.equals(newStatus)) {
+                    shutdownLights()
+                    lightService.turnLightOn LightColor.GREEN, model.intensity
+                }
+                else if(!model.keepLightOnWhenBuildPassed) {
+                    shutdownLights()
+                }
+                break;
+            case BuildStatus.FAILURE:
+                 if(!previousStatus.equals(newStatus)) {
+                    shutdownLights()
+                    lightService.turnLightOn LightColor.RED, model.intensity
+                }
+                else if(!model.keepLightOnWhenBuildFailed) {
+                    shutdownLights()
+                }
+        }
+    }
+
+    def shutdownLights() {
+        lightService.turnLightOff LightColor.GREEN
+        lightService.turnLightOff LightColor.YELLOW
+        lightService.flashLightOff LightColor.YELLOW
+        lightService.turnLightOff LightColor.RED
     }
 
     def deviceNotFound() {
-        JOptionPane.showMessageDialog(Window.windows.find{it.focused},
-            app.i18n.getMessage('buildLight.settings.light.not.found'), app.i18n.getMessage('buildLight.settings.light.not.found'),
-            JOptionPane.ERROR_MESSAGE)
-    }
-
-    def startTimer(delay, repeat, closure) {
-        javax.swing.Timer timer = new javax.swing.Timer(delay, [
-               actionPerformed: { e ->
-                   closure()
-               }
-        ] as ActionListener)
-        timer.repeats = repeat
-        timer.start()
+        JOptionPane.showMessageDialog(Window.windows.find {it.focused},
+                app.i18n.getMessage('buildLight.settings.light.not.found'), app.i18n.getMessage('buildLight.settings.light.not.found'),
+                JOptionPane.ERROR_MESSAGE)
     }
 
     void mvcGroupDestroy() {
-        lightService.closeDevice()
+        closeDevice()
     }
 
 }

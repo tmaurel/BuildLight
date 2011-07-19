@@ -1,12 +1,12 @@
 package buildLight.server.hudson
 
-import buildLight.constants.BuildStatus
-import buildLight.server.ICIServer
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import org.apache.http.HttpRequest
 import org.apache.http.HttpRequestInterceptor
 import org.apache.http.protocol.HttpContext
+import buildLight.constants.BuildStatus
+import buildLight.server.ICIServer
 
 public class HudsonServer implements ICIServer {
 
@@ -39,15 +39,15 @@ public class HudsonServer implements ICIServer {
                         path: JSON_API_PATH,
                         contentType: ContentType.JSON
                 ) { resp, json ->
-                   if(resp.statusLine.statusCode == 200) {
-                       status = parseInputStreamForStatus(json)
-                   }
+                    if (resp.statusLine.statusCode == 200) {
+                        status = parseInputStreamForStatus(json)
+                    }
                 }
             }
         }
         catch (IOException e) {}
         catch (IllegalStateException e) {}
-        if(status == null) {
+        if (status == null) {
             serverNotFound()
         }
         status
@@ -59,14 +59,14 @@ public class HudsonServer implements ICIServer {
 
     private parseInputStreamForStatus(json) {
         def status = BuildStatus.UNKNOWN
-        if(json?.building) {
+        if (json?.building) {
             status = BuildStatus.BUILDING
         }
         else {
-            switch(json?.result) {
+            switch (json?.result) {
                 case STATUS_SUCCESS:
                     status = BuildStatus.SUCCESS
-                break;
+                    break;
                 case STATUS_FAILURE:
                     status = BuildStatus.FAILURE
             }

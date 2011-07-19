@@ -1,7 +1,7 @@
 package buildLight
 
 import griffon.core.GriffonApplication
-import griffon.test.*
+import griffon.test.GriffonUnitTestCase
 
 class CIServerTests extends GriffonUnitTestCase {
     GriffonApplication app

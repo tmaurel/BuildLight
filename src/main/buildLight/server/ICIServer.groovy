@@ -4,11 +4,11 @@ import buildLight.constants.BuildStatus
 
 public interface ICIServer {
 
-    void setServerUrl(String serverUrl);
+    void setServerUrl(String serverUrl)
 
-    void setCredentials(String login, String password);
+    void setCredentials(String login, String password)
 
-    BuildStatus getLastBuildStatus();
+    BuildStatus getLastBuildStatus()
 
     class CIServerNotFound extends Exception {}
 

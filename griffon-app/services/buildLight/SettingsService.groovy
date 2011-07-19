@@ -17,7 +17,7 @@ class SettingsService {
         def configToRead
         def userConfigFile = new File(USER_CONFIG_PATH)
 
-        if(!userConfigFile.exists()) {
+        if (!userConfigFile.exists()) {
             log.info "Reading default config"
             configToRead = this.class.classLoader.loadClass(DEFAULT_CONFIG_PATH)
         }
@@ -32,7 +32,7 @@ class SettingsService {
     def writeSettings() {
         log.info "Saving user config"
         new File(USER_CONFIG_PATH).withWriter { writer ->
-             this.config.writeTo(writer)
+            this.config.writeTo(writer)
         }
     }
 }
