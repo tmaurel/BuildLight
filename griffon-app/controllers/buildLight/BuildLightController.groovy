@@ -1,6 +1,5 @@
 package buildLight
 
-import buildLight.server.ICIServer.CIServerNotFound
 import buildLight.timer.TimerFactory
 import buildLight.constants.BuildStatus
 
