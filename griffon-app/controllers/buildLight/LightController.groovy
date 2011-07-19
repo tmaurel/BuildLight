@@ -72,7 +72,7 @@ class LightController {
                         lightService.turnLightOn LightColor.YELLOW, model.intensity
                     }
                 }
-                break;
+                break
             case BuildStatus.SUCCESS:
                 if(!previousStatus.equals(newStatus)) {
                     shutdownLights()
@@ -81,7 +81,7 @@ class LightController {
                 else if(!model.keepLightOnWhenBuildPassed) {
                     shutdownLights()
                 }
-                break;
+                break
             case BuildStatus.FAILURE:
                  if(!previousStatus.equals(newStatus)) {
                     shutdownLights()
@@ -90,6 +90,11 @@ class LightController {
                 else if(!model.keepLightOnWhenBuildFailed) {
                     shutdownLights()
                 }
+                break
+            case BuildStatus.UNKNOWN:
+            default:
+                shutdownLights()
+                break
         }
     }
 
