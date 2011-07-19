@@ -67,7 +67,7 @@ class BuildLightController {
                     }
 
                     if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
-                        log.info("Light disabled during this time range (From {}, until {}", [disableFrom, disableUntil].toArray())
+                        log.info("Light disabled during this time range (From {}, until {})", [disableFrom, disableUntil].toArray())
                     }
                     else {
                         ciServerController.updateLight(model.currentStatus, {
