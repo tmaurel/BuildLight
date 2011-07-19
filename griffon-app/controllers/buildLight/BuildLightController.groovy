@@ -2,6 +2,7 @@ package buildLight
 
 import buildLight.timer.TimerFactory
 import buildLight.constants.BuildStatus
+import buildLight.timer.TimeArray
 
 class BuildLightController {
     // these will be injected by Griffon
@@ -27,6 +28,8 @@ class BuildLightController {
     def start() {
 
         boolean ok = true
+
+        def format = TimeArray.getFormat()
 
         view.tabs.selectedIndex = 0
         view.tabs.setEnabledAt(1, false)
@@ -55,10 +58,23 @@ class BuildLightController {
         if (ok) {
             currentTimer = TimerFactory.createTimer(ciServerController.frequencyInMilliseconds, 0, true, {
                 execOutside {
-                    ciServerController.updateLight(model.currentStatus, {
-                        ciServerController.serverNotFound()
-                        stop()
-                    })
+
+                    def currentDate = new Date()
+                    def disableFrom = format.parse(model.disableFrom)
+                    def disableUntil = format.parse(model.disableUntil)
+                    if(disableUntil.before(disableFrom)) {
+                        disableUntil = disableUntil + 1
+                    }
+
+                    if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
+                        log.info("Light disabled during this time range (From {}, until {}", [disableFrom, disableUntil].toArray())
+                    }
+                    else {
+                        ciServerController.updateLight(model.currentStatus, {
+                            ciServerController.serverNotFound()
+                            stop()
+                        })
+                    }
                 }
             })
         }

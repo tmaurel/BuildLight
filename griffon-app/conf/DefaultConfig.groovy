@@ -14,3 +14,9 @@ light {
     keepLightOnWhenBuildFailed = true
     keepLightOnWhenBuildPassed = true
 }
+
+general {
+    disableRange = false
+    disableFrom = "20:00"
+    disableUntil = "07:00"
+}

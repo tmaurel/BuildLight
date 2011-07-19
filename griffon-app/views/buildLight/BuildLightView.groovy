@@ -3,6 +3,31 @@ package buildLight
 import buildLight.constants.BuildStatus
 import java.awt.Color
 import javax.swing.JFrame
+import buildLight.timer.TimeArray
+
+def disableFrom = comboBox(
+    id: 'disableFrom',
+    items: TimeArray.getArray(),
+    selectedItem: bind('disableFrom', source: model, mutual: true)
+)
+
+def disableUntil = comboBox(
+    id: 'disableUntil',
+    items: TimeArray.getArray(),
+    selectedItem: bind('disableUntil', source: model, mutual: true, converter: {
+        println "selected : " + it
+        it
+    }, reverseConverter: {
+        println "reverseSelected : " + it
+        it
+    })
+)
+
+def toggleDisableFields = { enabled ->
+    disableFrom.enabled = enabled
+    disableUntil.enabled = enabled
+    enabled
+}
 
 def mainFrame = application(title: 'BuildLight',
         id: 'mainFrame',
@@ -33,7 +58,10 @@ def mainFrame = application(title: 'BuildLight',
             panel(
                     constraints: 'align center'
             ) {
-                migLayout(layoutConstraints: 'fill')
+                migLayout(
+                    layoutConstraints: 'fill, debug',
+                    colConstraints: '[]40[]'
+                )
 
                 label(
                         text: app.i18n.getMessage('buildLight.current.status'),
@@ -62,6 +90,38 @@ def mainFrame = application(title: 'BuildLight',
                             "<html><font color=\"#${color.substring(2, color.length())}\">${app.i18n.getMessage("buildLight.current.status.$it")}</font></html>"
                         }),
                         constraints: 'grow, wrap'
+                )
+
+                vbox(
+                    constraints: 'growy, wrap'
+                )
+
+                checkBox(
+                        id: 'disableRange',
+                        label: app.i18n.getMessage('buildLight.settings.general.disable.range'),
+                        constraints: 'wrap, grow, span 2',
+                        selected: bind('disableRange', source: model, mutual: true,
+                                converter: toggleDisableFields,
+                                reverseConverter: toggleDisableFields
+                        )
+                )
+
+                label(
+                        text: app.i18n.getMessage('buildLight.settings.general.disable.from')
+                )
+
+                widget(
+                    disableFrom,
+                    constraints: 'wrap, grow',
+                )
+
+                label(
+                    text: app.i18n.getMessage('buildLight.settings.general.disable.until')
+                )
+
+                widget(
+                    disableUntil,
+                    constraints: 'wrap, grow',
                 )
             }
         }
