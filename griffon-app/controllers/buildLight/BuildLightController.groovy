@@ -29,8 +29,6 @@ class BuildLightController {
 
         boolean ok = true
 
-        def format = TimeArray.getFormat()
-
         view.tabs.selectedIndex = 0
         view.tabs.setEnabledAt(1, false)
         view.tabs.setEnabledAt(2, false)
@@ -55,8 +53,16 @@ class BuildLightController {
             }
         })
 
-        def disableFrom = format.parse(model.disableFrom)
-        def disableUntil = format.parse(model.disableUntil)
+        def (fromHours, fromMinutes) = model.disableFrom.split(":")*.toInteger()
+        def disableFrom = new Date()
+        disableFrom.hours = fromHours
+        disableFrom.minutes = fromMinutes
+
+        def (untilHours, untilMinutes) = model.disableUntil.split(":")*.toInteger()
+        def disableUntil = new Date()
+        disableUntil.hours = untilHours
+        disableUntil.minutes = untilMinutes
+
         if(disableUntil.before(disableFrom)) {
             disableUntil += 1
         }

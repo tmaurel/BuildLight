@@ -8,8 +8,6 @@ class TimeArray {
 
     def static final list = new ArrayList<String>()
 
-    def static final DateFormat format = new SimpleDateFormat("hh:mm");
-
     static {
         (0..23).each {
              def hour = (it > 9) ? it.toString() : "0" + it.toString()
@@ -23,10 +21,4 @@ class TimeArray {
     def static getArray() {
         list.toArray()
     }
-
-    def static getFormat() {
-        format
-    }
-
-
 }

@@ -59,7 +59,7 @@ def mainFrame = application(title: 'BuildLight',
                     constraints: 'align center'
             ) {
                 migLayout(
-                    layoutConstraints: 'fill, debug',
+                    layoutConstraints: 'fill',
                     colConstraints: '[]40[]'
                 )
 
