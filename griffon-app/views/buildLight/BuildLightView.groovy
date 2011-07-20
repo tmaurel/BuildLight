@@ -14,13 +14,7 @@ def disableFrom = comboBox(
 def disableUntil = comboBox(
     id: 'disableUntil',
     items: TimeArray.getArray(),
-    selectedItem: bind('disableUntil', source: model, mutual: true, converter: {
-        println "selected : " + it
-        it
-    }, reverseConverter: {
-        println "reverseSelected : " + it
-        it
-    })
+    selectedItem: bind('disableUntil', source: model, mutual: true)
 )
 
 def toggleDisableFields = { enabled ->

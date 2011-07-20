@@ -28,12 +28,9 @@ class BuildLightController {
     def start() {
 
         boolean ok = true
-
-        view.tabs.selectedIndex = 0
-        view.tabs.setEnabledAt(1, false)
-        view.tabs.setEnabledAt(2, false)
-        view.startButon.action = actions.stopAction
-
+        edt {
+            view.startButon.action = actions.stopAction
+        }
         def lightController = app.controllers.Light
         def ciServerController = app.controllers.CIServer
 
@@ -57,11 +54,13 @@ class BuildLightController {
         def disableFrom = new Date()
         disableFrom.hours = fromHours
         disableFrom.minutes = fromMinutes
+        disableFrom.seconds = 0
 
         def (untilHours, untilMinutes) = model.disableUntil.split(":")*.toInteger()
         def disableUntil = new Date()
         disableUntil.hours = untilHours
         disableUntil.minutes = untilMinutes
+        disableUntil.seconds = 0
 
         if(disableUntil.before(disableFrom)) {
             disableUntil += 1
@@ -102,12 +101,10 @@ class BuildLightController {
     }
 
     def stop() {
-        def lightController = app.controllers.Light
         edt {
-            view.tabs.setEnabledAt(1, true)
-            view.tabs.setEnabledAt(2, true)
             view.startButon.action = actions.startAction
         }
+        def lightController = app.controllers.Light
         lightController.closeDevice()
         model.currentStatus = BuildStatus.UNKNOWN
         currentTimer?.stop()
