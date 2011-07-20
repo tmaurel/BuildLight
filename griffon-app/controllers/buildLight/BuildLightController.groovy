@@ -67,6 +67,10 @@ class BuildLightController {
             disableUntil += 1
         }
 
+        if(model.disableRange) {
+            log.info("Light should be disabled during this time frame (From {}, until {})", [disableFrom, disableUntil].toArray())
+        }
+
         def disabled = false
 
         if (ok) {
@@ -77,12 +81,13 @@ class BuildLightController {
 
                     if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
                         disabled = true
-                        log.info("Light disabled during this time range (From {}, until {})", [disableFrom, disableUntil].toArray())
+                        log.info("Light disabled during this time frame (From {}, until {})", [disableFrom, disableUntil].toArray())
                     }
                     else {
                         if(disabled) {
                             disableFrom += 1
                             disableUntil += 1
+                            log.info("Light re-enabled. Next disabled time frame : (From {}, until {})", [disableFrom, disableUntil].toArray())
                             disabled = false
                         }
 
