@@ -79,6 +79,9 @@ class BuildLightController {
                     def currentDate = new Date()
 
                     if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
+                        if(!disabled) {
+                            lightController.shutdownLights()
+                        }
                         disabled = true
                         log.info("Light disabled during this time frame (From {}, until {})", [disableFrom, disableUntil].toArray())
                     }
@@ -89,12 +92,13 @@ class BuildLightController {
                             log.info("Light re-enabled. Next disabled time frame : (From {}, until {})", [disableFrom, disableUntil].toArray())
                             disabled = false
                         }
-
-                        ciServerController.updateLight(model.currentStatus, {
-                            ciServerController.serverNotFound()
-                            stop()
-                        })
                     }
+
+                    ciServerController.updateStatus(!disabled, model.currentStatus, {
+                        ciServerController.serverNotFound()
+                        stop()
+                    })
+
                 }
             })
         }

@@ -10,7 +10,7 @@ ciServer {
 light {
     device = "DELCOM_V2"
     intensity = 50
-    flashOnBuild = true
+    keepLightOnWhenBuildIsUnstable = true
     keepLightOnWhenBuildFailed = true
     keepLightOnWhenBuildPassed = true
 }

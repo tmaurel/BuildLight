@@ -68,6 +68,7 @@ def mainFrame = application(title: 'BuildLight',
                             def color
                             switch (it) {
                                 case BuildStatus.BUILDING:
+                                case BuildStatus.UNSTABLE:
                                     color = Integer.toHexString(Color.yellow.RGB)
                                     break
                                 case BuildStatus.FAILURE:

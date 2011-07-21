@@ -12,6 +12,7 @@ public class HudsonServer implements ICIServer {
 
     final static String STATUS_SUCCESS = "SUCCESS"
     final static String STATUS_FAILURE = "FAILURE"
+    final static String STATUS_UNSTABLE = "UNSTABLE"
 
 
     final static String JSON_API_PATH = "lastBuild/api/json"
@@ -66,9 +67,12 @@ public class HudsonServer implements ICIServer {
             switch (json?.result) {
                 case STATUS_SUCCESS:
                     status = BuildStatus.SUCCESS
-                    break;
+                    break
                 case STATUS_FAILURE:
                     status = BuildStatus.FAILURE
+                    break
+                case STATUS_UNSTABLE:
+                    status = BuildStatus.UNSTABLE
             }
         }
         status

@@ -11,7 +11,7 @@ class LightModel {
 
     @Bindable int intensity
 
-    @Bindable Boolean flashOnBuild
+    @Bindable Boolean keepLightOnWhenBuildIsUnstable
 
     @Bindable Boolean keepLightOnWhenBuildFailed
 
@@ -21,7 +21,7 @@ class LightModel {
         def lightSettings = settingsService.config.light
         this.device = LightDevice.valueOf lightSettings.device
         this.intensity = lightSettings.intensity
-        this.flashOnBuild = lightSettings.flashOnBuild
+        this.keepLightOnWhenBuildIsUnstable = lightSettings.keepLightOnWhenBuildIsUnstable
         this.keepLightOnWhenBuildFailed = lightSettings.keepLightOnWhenBuildFailed
         this.keepLightOnWhenBuildPassed = lightSettings.keepLightOnWhenBuildPassed
     }
@@ -30,7 +30,7 @@ class LightModel {
         def lightSettings = settingsService.config.light
         lightSettings.device = this.device.name()
         lightSettings.intensity = this.intensity
-        lightSettings.flashOnBuild = this.flashOnBuild
+        lightSettings.keepLightOnWhenBuildIsUnstable = this.keepLightOnWhenBuildIsUnstable
         lightSettings.keepLightOnWhenBuildFailed = this.keepLightOnWhenBuildFailed
         lightSettings.keepLightOnWhenBuildPassed = this.keepLightOnWhenBuildPassed
     }

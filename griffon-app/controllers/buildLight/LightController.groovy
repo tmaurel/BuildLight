@@ -32,18 +32,22 @@ class LightController {
         if (lightService.isOpened()) {
 
             TimerFactory.createTimer(1000, false, {
-                updateLight(BuildStatus.UNKNOWN, BuildStatus.SUCCESS)
+                updateLight(BuildStatus.UNKNOWN, BuildStatus.UNSTABLE, false)
             })
 
             TimerFactory.createTimer(4000, false, {
-                updateLight(BuildStatus.SUCCESS, BuildStatus.BUILDING)
+                updateLight(BuildStatus.UNSTABLE, BuildStatus.SUCCESS, false)
             })
 
             TimerFactory.createTimer(7000, false, {
-                updateLight(BuildStatus.BUILDING, BuildStatus.FAILURE)
+                updateLight(BuildStatus.SUCCESS, BuildStatus.BUILDING, false)
             })
 
             TimerFactory.createTimer(10000, false, {
+                updateLight(BuildStatus.BUILDING, BuildStatus.FAILURE, false)
+            })
+
+            TimerFactory.createTimer(13000, false, {
                 lightService.closeDevice()
                 doLater {
                     view.waitBox.hide()
@@ -60,21 +64,16 @@ class LightController {
         }
     }
 
-    def updateLight(BuildStatus previousStatus, BuildStatus newStatus) {
+    def updateLight(BuildStatus previousStatus, BuildStatus newStatus, boolean forceUpdate) {
         switch (newStatus) {
             case BuildStatus.BUILDING:
-                if(!previousStatus.equals(newStatus)) {
+                if(!previousStatus.equals(newStatus) || forceUpdate) {
                     shutdownLights()
-                    if (model.flashOnBuild) {
-                        lightService.flashLightOn LightColor.YELLOW, model.intensity
-                    }
-                    else {
-                        lightService.turnLightOn LightColor.YELLOW, model.intensity
-                    }
+                    lightService.flashLightOn LightColor.YELLOW, model.intensity
                 }
                 break
             case BuildStatus.SUCCESS:
-                if(!previousStatus.equals(newStatus)) {
+                if(!previousStatus.equals(newStatus)  || forceUpdate) {
                     shutdownLights()
                     lightService.turnLightOn LightColor.GREEN, model.intensity
                 }
@@ -83,11 +82,20 @@ class LightController {
                 }
                 break
             case BuildStatus.FAILURE:
-                 if(!previousStatus.equals(newStatus)) {
+                 if(!previousStatus.equals(newStatus)  || forceUpdate) {
                     shutdownLights()
                     lightService.turnLightOn LightColor.RED, model.intensity
                 }
                 else if(!model.keepLightOnWhenBuildFailed) {
+                    shutdownLights()
+                }
+                break
+            case BuildStatus.UNSTABLE:
+                 if(!previousStatus.equals(newStatus)  || forceUpdate) {
+                    shutdownLights()
+                    lightService.turnLightOn LightColor.YELLOW, model.intensity
+                }
+                else if(!model.keepLightOnWhenBuildIsUnstable) {
                     shutdownLights()
                 }
                 break

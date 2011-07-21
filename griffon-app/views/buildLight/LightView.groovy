@@ -63,13 +63,13 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.flashOnBuild')
+            text: app.i18n.getMessage('buildLight.settings.light.keepLightWhenIsUnstable')
     )
 
     checkBox(
-            id: 'flashOnBuild',
+            id: 'keepLightOnWhenBuildIsUnstable',
             constraints: 'wrap, grow',
-            selected: bind('flashOnBuild', source: model, mutual: true)
+            selected: bind('keepLightOnWhenBuildIsUnstable', source: model, mutual: true)
     )
 
     label(
