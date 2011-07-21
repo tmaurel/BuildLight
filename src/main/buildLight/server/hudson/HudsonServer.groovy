@@ -7,8 +7,12 @@ import org.apache.http.HttpRequestInterceptor
 import org.apache.http.protocol.HttpContext
 import buildLight.constants.BuildStatus
 import buildLight.server.ICIServer
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 public class HudsonServer implements ICIServer {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HudsonServer.class)
 
     final static String STATUS_SUCCESS = "SUCCESS"
     final static String STATUS_FAILURE = "FAILURE"
@@ -34,20 +38,35 @@ public class HudsonServer implements ICIServer {
 
     public BuildStatus getLastBuildStatus() {
         BuildStatus status = null;
-        try {
-            if (this.builder) {
-                this.builder.get(
-                        path: JSON_API_PATH,
-                        contentType: ContentType.JSON
-                ) { resp, json ->
-                    if (resp.statusLine.statusCode == 200) {
-                        status = parseInputStreamForStatus(json)
+        int retries = 3;
+        int i = 0;
+
+        while(i < retries && status == null) {
+            LOGGER.info("Trying to retrieve status from Hudson (try # {} on {}}", [i+1, retries].toArray())
+            try {
+                if (this.builder) {
+                    this.builder.get(
+                            path: JSON_API_PATH,
+                            contentType: ContentType.JSON
+                    ) { resp, json ->
+                        if (resp.statusLine.statusCode == 200) {
+                            status = parseInputStreamForStatus(json)
+                        }
+                        else {
+                            LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
+                        }
                     }
                 }
             }
+            catch (IOException e) {
+                LOGGER.error("IOException while trying to retrieve status from Hudson", e)
+            }
+            catch (IllegalStateException e) {
+                LOGGER.error("IllegalStateException while trying to retrieve status from Hudson", e)
+            }
+            ++i
         }
-        catch (IOException e) {}
-        catch (IllegalStateException e) {}
+
         if (status == null) {
             serverNotFound()
         }

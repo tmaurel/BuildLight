@@ -23,7 +23,6 @@ class CIServerController {
             def lastBuildStatus = cIServerService.lastBuildStatus
 
             if(successCallback) {
-                println successCallback
                 successCallback(lastBuildStatus)
             }
         }

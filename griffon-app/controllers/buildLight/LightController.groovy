@@ -2,10 +2,9 @@ package buildLight
 
 import buildLight.constants.BuildStatus
 import buildLight.constants.LightColor
-import java.awt.Window
-import java.awt.event.ActionListener
-import javax.swing.JOptionPane
 import buildLight.timer.TimerFactory
+import java.awt.Window
+import javax.swing.JOptionPane
 
 class LightController {
 

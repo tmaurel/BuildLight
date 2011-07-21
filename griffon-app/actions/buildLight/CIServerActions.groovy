@@ -12,7 +12,6 @@ testServerAction = action(
             doOutside {
                 controller.test(
                     { status ->
-                        println "TITITITITT : " + status
                         edt {
                             waitBox.hide()
                         }
