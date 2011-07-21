@@ -36,9 +36,8 @@ public class HudsonServer implements ICIServer {
         })
     }
 
-    public BuildStatus getLastBuildStatus() {
+    public BuildStatus getLastBuildStatus(int retries) {
         BuildStatus status = null;
-        int retries = 3;
         int i = 0;
 
         while(i < retries && status == null) {

@@ -8,7 +8,7 @@ public interface ICIServer {
 
     void setCredentials(String login, String password)
 
-    BuildStatus getLastBuildStatus()
+    BuildStatus getLastBuildStatus(int retries)
 
     class CIServerNotFound extends Exception {}
 

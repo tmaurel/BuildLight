@@ -19,6 +19,8 @@ class CIServerModel {
 
     @Bindable String frequency
 
+    @Bindable Integer retries
+
     void mvcGroupInit(Map args) {
         def ciServerSettings = settingsService.config.ciServer
         this.serverType = ServerType.valueOf ciServerSettings.serverType
@@ -27,6 +29,7 @@ class CIServerModel {
         this.userName = ciServerSettings.userName
         this.password = new String(ciServerSettings.password.decodeBase64())
         this.frequency = ciServerSettings.frequency
+        this.retries = ciServerSettings.retries
     }
 
     void mvcGroupDestroy() {
@@ -37,6 +40,7 @@ class CIServerModel {
         ciServerSettings.userName = this.userName
         ciServerSettings.password = this.password.bytes.encodeBase64().toString()
         ciServerSettings.frequency = this.frequency
+        ciServerSettings.retries = this.retries
     }
 
 }

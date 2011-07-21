@@ -18,8 +18,8 @@ class CIServerService {
         this.server.setCredentials(login, password)
     }
 
-    def getLastBuildStatus() {
-        this.server.lastBuildStatus
+    def getLastBuildStatus(int retries) {
+        this.server.getLastBuildStatus(retries)
     }
 
 }

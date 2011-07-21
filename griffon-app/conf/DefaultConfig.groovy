@@ -4,7 +4,8 @@ ciServer {
     needAuth = false
     userName = ""
     password = ""
-    frequency = 5
+    frequency = "5"
+    retries = 3
 }
 
 light {

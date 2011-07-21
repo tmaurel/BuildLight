@@ -20,7 +20,7 @@ class CIServerController {
         }
 
         try {
-            def lastBuildStatus = cIServerService.lastBuildStatus
+            def lastBuildStatus = cIServerService.getLastBuildStatus(model.retries)
 
             if(successCallback) {
                 successCallback(lastBuildStatus)
@@ -46,7 +46,7 @@ class CIServerController {
         def lightController = app.controllers.Light
         def mainController = app.controllers.BuildLight
         try {
-            def status = cIServerService.lastBuildStatus
+            def status = cIServerService.getLastBuildStatus(model.retries)
             if(updateLight) {
                 lightController.updateLight(currentStatus, status, updateLight != this.updateLight)
             }
