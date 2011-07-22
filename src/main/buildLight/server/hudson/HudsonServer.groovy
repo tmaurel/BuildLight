@@ -9,6 +9,7 @@ import buildLight.constants.BuildStatus
 import buildLight.server.ICIServer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import groovyx.net.http.RESTClient
 
 public class HudsonServer implements ICIServer {
 
@@ -25,7 +26,7 @@ public class HudsonServer implements ICIServer {
 
     public void setServerUrl(String serverUrl) {
         String server = serverUrl.endsWith("/") ? serverUrl : serverUrl + "/"
-        this.builder = new HTTPBuilder(server)
+        this.builder = new RESTClient(server)
     }
 
     public void setCredentials(String login, String password) {
@@ -44,16 +45,12 @@ public class HudsonServer implements ICIServer {
             LOGGER.info("Trying to retrieve status from Hudson (try # {} on {}}", [i+1, retries].toArray())
             try {
                 if (this.builder) {
-                    this.builder.get(
-                            path: JSON_API_PATH,
-                            contentType: ContentType.JSON
-                    ) { resp, json ->
-                        if (resp.statusLine.statusCode == 200) {
-                            status = parseInputStreamForStatus(json)
-                        }
-                        else {
-                            LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
-                        }
+                    def resp = this.builder.get(path: JSON_API_PATH)
+                    if (resp.status == 200) {
+                        status = parseInputStreamForStatus(resp.data)
+                    }
+                    else {
+                        LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
                     }
                 }
             }
