@@ -1,6 +1,5 @@
 package buildLight.server.hudson
 
-import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import org.apache.http.HttpRequest
 import org.apache.http.HttpRequestInterceptor
@@ -10,6 +9,9 @@ import buildLight.server.ICIServer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import groovyx.net.http.RESTClient
+import groovyx.net.http.HttpResponseException
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+import java.util.concurrent.TimeUnit
 
 public class HudsonServer implements ICIServer {
 
@@ -39,28 +41,31 @@ public class HudsonServer implements ICIServer {
 
     public BuildStatus getLastBuildStatus(int retries) {
         BuildStatus status = null;
-        int i = 0;
 
-        while(i < retries && status == null) {
-            LOGGER.info("Trying to retrieve status from Hudson (try # {} on {}}", [i+1, retries].toArray())
-            try {
-                if (this.builder) {
-                    def resp = this.builder.get(path: JSON_API_PATH)
-                    if (resp.status == 200) {
-                        status = parseInputStreamForStatus(resp.data)
-                    }
-                    else {
-                        LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
-                    }
+        LOGGER.info("Trying to retrieve status from Hudson")
+        try {
+            if (this.builder) {
+                this.builder.client.httpRequestRetryHandler = new DefaultHttpRequestRetryHandler(retries, false)
+
+                def resp = this.builder.get(path: JSON_API_PATH)
+                if (resp.status == 200) {
+                    status = parseInputStreamForStatus(resp.data)
                 }
+                else {
+                    LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
+                }
+
+                this.builder.client?.connectionManager?.closeIdleConnections(1, TimeUnit.MILLISECONDS)
+                this.builder.client?.connectionManager?.closeExpiredConnections()
             }
-            catch (IOException e) {
-                LOGGER.error("IOException while trying to retrieve status from Hudson", e)
-            }
-            catch (IllegalStateException e) {
-                LOGGER.error("IllegalStateException while trying to retrieve status from Hudson", e)
-            }
-            ++i
+        } catch (HttpResponseException e) {
+            LOGGER.error("HttpResponseException when trying to retrieve status from Hudson : {}", [e.response.data]);
+        }
+        catch (IOException e) {
+            LOGGER.error("IOException while trying to retrieve status from Hudson", e)
+        }
+        catch (IllegalStateException e) {
+            LOGGER.error("IllegalStateException while trying to retrieve status from Hudson", e)
         }
 
         if (status == null) {

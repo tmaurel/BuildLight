@@ -29,6 +29,7 @@ class BuildLightController {
 
         boolean ok = true
         edt {
+            toggleConf(false)
             view.startButon.action = actions.stopAction
         }
         def lightController = app.controllers.Light
@@ -104,8 +105,18 @@ class BuildLightController {
         }
     }
 
+    def toggleConf(enabled) {
+        view.tabs.setEnabledAt(1, enabled)
+        view.tabs.setEnabledAt(2, enabled)
+        view.disableRange.enabled = enabled
+        view.disableFrom.enabled = enabled
+        view.disableUntil.enabled = enabled
+    }
+
+
     def stop() {
         edt {
+            toggleConf(true)
             view.startButon.action = actions.startAction
         }
         def lightController = app.controllers.Light
