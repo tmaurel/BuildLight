@@ -1,17 +1,19 @@
 package buildLight.server.hudson
 
-import groovyx.net.http.HTTPBuilder
-import org.apache.http.HttpRequest
-import org.apache.http.HttpRequestInterceptor
-import org.apache.http.protocol.HttpContext
 import buildLight.constants.BuildStatus
 import buildLight.server.ICIServer
+import groovyx.net.http.AsyncHTTPBuilder
+import groovyx.net.http.ContentType
+import groovyx.net.http.HttpResponseException
+import java.util.concurrent.TimeUnit
+import org.apache.http.HttpRequest
+import org.apache.http.HttpRequestInterceptor
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+import org.apache.http.protocol.HttpContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import groovyx.net.http.RESTClient
-import groovyx.net.http.HttpResponseException
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
-import java.util.concurrent.TimeUnit
+import org.codehaus.groovy.runtime.InvokerInvocationException
+import java.util.concurrent.ExecutionException
 
 public class HudsonServer implements ICIServer {
 
@@ -24,11 +26,16 @@ public class HudsonServer implements ICIServer {
 
     final static String JSON_API_PATH = "lastBuild/api/json"
 
-    HTTPBuilder builder
+    AsyncHTTPBuilder builder
 
     public void setServerUrl(String serverUrl) {
         String server = serverUrl.endsWith("/") ? serverUrl : serverUrl + "/"
-        this.builder = new RESTClient(server)
+        this.builder = new AsyncHTTPBuilder(
+            poolSize : 4,
+            uri : server,
+            contentType : ContentType.JSON,
+            timeout : 5000
+        )
     }
 
     public void setCredentials(String login, String password) {
@@ -40,32 +47,33 @@ public class HudsonServer implements ICIServer {
     }
 
     public BuildStatus getLastBuildStatus(int retries) {
-        BuildStatus status = null;
 
+        BuildStatus status = null
         LOGGER.info("Trying to retrieve status from Hudson")
         try {
             if (this.builder) {
-                this.builder.client.httpRequestRetryHandler = new DefaultHttpRequestRetryHandler(retries, false)
+                this.builder.client.httpRequestRetryHandler = new DefaultHttpRequestRetryHandler(retries, true)
 
-                def resp = this.builder.get(path: JSON_API_PATH)
-                if (resp.status == 200) {
-                    status = parseInputStreamForStatus(resp.data)
-                }
-                else {
-                    LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
+                def result = this.builder.get(path: JSON_API_PATH) { resp, json ->
+                    if (resp.status == 200) {
+                        return parseInputStreamForStatus(json)
+                    }
+                    else {
+                        LOGGER.error("Wrong status for Hudson response : {}", [resp.statusLine].toArray())
+                    }
+                    return null
                 }
 
-                this.builder.client?.connectionManager?.closeIdleConnections(1, TimeUnit.MILLISECONDS)
-                this.builder.client?.connectionManager?.closeExpiredConnections()
+                if(result) {
+                    while( ! result.done ) {
+                        Thread.sleep(500)
+                    }
+                    status = result.get()
+                }
             }
-        } catch (HttpResponseException e) {
-            LOGGER.error("HttpResponseException when trying to retrieve status from Hudson : {}", [e.response.data]);
         }
-        catch (IOException e) {
-            LOGGER.error("IOException while trying to retrieve status from Hudson", e)
-        }
-        catch (IllegalStateException e) {
-            LOGGER.error("IllegalStateException while trying to retrieve status from Hudson", e)
+		catch (ExecutionException e) {
+            LOGGER.error("ExecutionException when trying to retrieve status from Hudson : {}", [e]);
         }
 
         if (status == null) {
