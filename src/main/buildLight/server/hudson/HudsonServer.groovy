@@ -14,6 +14,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.codehaus.groovy.runtime.InvokerInvocationException
 import java.util.concurrent.ExecutionException
+import org.apache.http.client.HttpRequestRetryHandler
+import buildLight.server.CustomHttpRequestRetryHandler
 
 public class HudsonServer implements ICIServer {
 
@@ -52,7 +54,7 @@ public class HudsonServer implements ICIServer {
         LOGGER.info("Trying to retrieve status from Hudson")
         try {
             if (this.builder) {
-                this.builder.client.httpRequestRetryHandler = new DefaultHttpRequestRetryHandler(retries, true)
+                this.builder.client.httpRequestRetryHandler = new CustomHttpRequestRetryHandler(retries: retries)
 
                 def result = this.builder.get(path: JSON_API_PATH) { resp, json ->
                     if (resp.status == 200) {
