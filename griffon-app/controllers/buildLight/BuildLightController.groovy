@@ -36,19 +36,15 @@ class BuildLightController {
         def ciServerController = app.controllers.CIServer
 
         ciServerController.initServer( null, {
+           stop()
            ciServerController.serverNotFound()
            ok = false
-           doLater {
-               stop()
-           }
         })
 
         lightController.initDevice( null, {
+            stop()
             lightController.deviceNotFound()
             ok = false
-            doLater {
-                stop()
-            }
         })
 
         def (fromHours, fromMinutes) = model.disableFrom.split(":")*.toInteger()
@@ -76,7 +72,6 @@ class BuildLightController {
         if (ok) {
             currentTimer = TimerFactory.createTimer(ciServerController.frequencyInMilliseconds, 0, true, {
                 execOutside {
-
                     def currentDate = new Date()
 
                     if(model.disableRange && currentDate.after(disableFrom) && currentDate.before(disableUntil)) {
@@ -96,8 +91,8 @@ class BuildLightController {
                     }
 
                     ciServerController.updateStatus(!disabled, model.currentStatus, {
-                        ciServerController.serverNotFound()
                         stop()
+                        ciServerController.serverNotFound()
                     })
 
                 }
@@ -119,10 +114,12 @@ class BuildLightController {
             toggleConf(true)
             view.startButon.action = actions.startAction
         }
-        def lightController = app.controllers.Light
-        lightController.closeDevice()
-        model.currentStatus = BuildStatus.UNKNOWN
-        currentTimer?.stop()
+        execOutside {
+            def lightController = app.controllers.Light
+            lightController.closeDevice()
+            model.currentStatus = BuildStatus.UNKNOWN
+            currentTimer?.stop()
+        }
     }
 
     def setCurrentStatus(status) {
