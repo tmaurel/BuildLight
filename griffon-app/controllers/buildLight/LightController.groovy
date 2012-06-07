@@ -114,7 +114,7 @@ class LightController {
 
     def deviceNotFound() {
         JOptionPane.showMessageDialog(Window.windows.find {it.focused},
-                app.i18n.getMessage('buildLight.settings.light.not.found'), app.i18n.getMessage('buildLight.settings.light.not.found'),
+                app.getMessage('buildLight.settings.light.not.found'), app.getMessage('buildLight.settings.light.not.found'),
                 JOptionPane.ERROR_MESSAGE)
     }
 

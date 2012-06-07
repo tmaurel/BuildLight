@@ -61,7 +61,7 @@ class CIServerController {
     def serverFound(status) {
         doLater {
             JOptionPane.showMessageDialog(Window.windows.find {it.focused},
-                    app.i18n.getMessage('buildLight.settings.server.found.with.status', [app.i18n.getMessage("buildLight.current.status.$status")]), app.i18n.getMessage('buildLight.settings.server.found'),
+                    app.getMessage('buildLight.settings.server.found.with.status', [app.getMessage("buildLight.current.status.$status")]), app.getMessage('buildLight.settings.server.found'),
                     JOptionPane.INFORMATION_MESSAGE)
         }
     }
@@ -69,7 +69,7 @@ class CIServerController {
     def serverNotFound() {
         doLater {
             JOptionPane.showMessageDialog(Window.windows.find {it.focused},
-            app.i18n.getMessage('buildLight.settings.server.not.found'), app.i18n.getMessage('buildLight.settings.server.not.found'),
+            app.getMessage('buildLight.settings.server.not.found'), app.getMessage('buildLight.settings.server.not.found'),
             JOptionPane.ERROR_MESSAGE)
         }
     }

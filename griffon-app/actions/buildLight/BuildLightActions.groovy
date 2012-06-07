@@ -3,7 +3,7 @@ package buildLight
 
 startAction = action(
         id: 'startAction',
-        name: app.i18n.getMessage('buildLight.start'),
+        name: app.getMessage('buildLight.start'),
         closure: {
             view.tabs.selectedIndex = 0
             controller.start()
@@ -12,7 +12,7 @@ startAction = action(
 
 stopAction = action(
         id: 'stopAction',
-        name: app.i18n.getMessage('buildLight.stop'),
+        name: app.getMessage('buildLight.stop'),
         closure: {
             controller.stop()
         }

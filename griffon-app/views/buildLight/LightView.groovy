@@ -12,7 +12,7 @@ widget(
         new JCenteredDialog(this.app.views.BuildLight.mainFrame),
         contentPane: optionPane(
                 messageType: JOptionPane.PLAIN_MESSAGE,
-                message: app.i18n.getMessage('buildLight.settings.light.previewing'),
+                message: app.getMessage('buildLight.settings.light.previewing'),
                 options: [],
                 border: BorderFactory.createLineBorder(Color.lightGray)
         ),
@@ -32,7 +32,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.device')
+            text: app.getMessage('buildLight.settings.light.device')
     )
 
     comboBox(
@@ -44,7 +44,7 @@ panel(
 
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.intensity')
+            text: app.getMessage('buildLight.settings.light.intensity')
     )
 
     slider(
@@ -63,7 +63,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.keepLightWhenIsUnstable')
+            text: app.getMessage('buildLight.settings.light.keepLightWhenIsUnstable')
     )
 
     checkBox(
@@ -73,7 +73,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.keepLightWhenFailed')
+            text: app.getMessage('buildLight.settings.light.keepLightWhenFailed')
     )
 
     checkBox(
@@ -83,7 +83,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.light.keepLightWhenSucceeded')
+            text: app.getMessage('buildLight.settings.light.keepLightWhenSucceeded')
     )
 
     checkBox(

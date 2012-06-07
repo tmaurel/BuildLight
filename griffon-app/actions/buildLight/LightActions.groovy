@@ -2,7 +2,7 @@ package buildLight
 
 previewAction = action(
         id: 'previewAction',
-        name: app.i18n.getMessage('buildLight.settings.light.preview'),
+        name: app.getMessage('buildLight.settings.light.preview'),
         closure: {
             def waitbox = view.waitBox
             waitbox.pack()

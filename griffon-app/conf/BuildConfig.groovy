@@ -3,15 +3,14 @@ environments {
     development {
         signingkey {
             params {
-                sigfile = 'GRIFFON'
-                keystore = "${basedir}/griffon-app/conf/keys/devKeystore"
-                alias = 'development'
+                // sigfile = 'GRIFFON'
+                // keystore = "${basedir}/griffon-app/conf/keys/devKeystore"
+                // alias = 'development'
                 storepass = 'BadStorePassword'
-                keypass = 'BadKeyPassword'
-                lazy = true // only sign when unsigned
+                keypass   = 'BadKeyPassword'
+                lazy      = true // only sign when unsigned
             }
         }
-
     }
     test {
         griffon {
@@ -24,9 +23,6 @@ environments {
     production {
         signingkey {
             params {
-                sigfile = 'GRIFFON'
-                keystore = 'CHANGE ME'
-                alias = 'CHANGE ME'
                 // NOTE: for production keys it is more secure to rely on key prompting
                 // no value means we will prompt //storepass = 'BadStorePassword'
                 // no value means we will prompt //keypass   = 'BadKeyPassword'
@@ -36,13 +32,13 @@ environments {
 
         griffon {
             jars {
-                sign = false
+                sign = true
                 pack = true
                 destDir = "${basedir}/staging"
             }
-            //webstart {
-            //    codebase = 'CHANGE ME'
-            //}
+            webstart {
+                codebase = 'CHANGE ME'
+            }
         }
     }
 }
@@ -51,6 +47,7 @@ griffon {
     memory {
         //max = '64m'
         //min = '2m'
+        //minPermSize = '2m'
         //maxPermSize = '64m'
     }
     jars {
@@ -96,7 +93,61 @@ signingkey {
         alias = env
         // storepass = 'BadStorePassword'
         // keypass   = 'BadKeyPassword'
-        lazy = true // only sign when unsigned
+        lazy      = true // only sign when unsigned
+    }
+}
+
+griffon {
+    doc {
+        logo = '<a href="http://griffon-framework.org" target="_blank"><img alt="The Griffon Framework" src="../img/griffon.png" border="0"/></a>'
+        sponsorLogo = "<br/>"
+        footer = "<br/><br/>Made with Griffon (@griffon.version@)"
+    }
+}
+
+deploy {
+    application {
+        title = "${appName} ${appVersion}"
+        vendor = System.properties['user.name']
+        homepage = "http://localhost/${appName}"
+        description {
+            complete = "${appName} ${appVersion}"
+            oneline  = "${appName} ${appVersion}"
+            minimal  = "${appName} ${appVersion}"
+            tooltip  = "${appName} ${appVersion}"
+        }
+        icon {
+            'default' {
+                name   = 'griffon-icon-64x64.png'
+                width  = '64'
+                height = '64'
+            }
+            splash {
+                name   = 'griffon.png'
+                width  = '391'
+                height = '123'
+            }
+            selected {
+                name   = 'griffon-icon-64x64.png'
+                width  = '64'
+                height = '64'
+            }
+            disabled {
+                name   = 'griffon-icon-64x64.png'
+                width  = '64'
+                height = '64'
+            }
+            rollover {
+                name   = 'griffon-icon-64x64.png'
+                width  = '64'
+                height = '64'
+            }
+            shortcut {
+                name   = 'griffon-icon-64x64.png'
+                width  = '64'
+                height = '64'
+            }
+        }
     }
 }
 
@@ -106,30 +157,21 @@ griffon.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
-        griffonPlugins()
         griffonHome()
-        griffonCentral()
-        flatDir name: 'jnaLib', dirs: 'lib'
+
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
-        mavenLocal()
-        mavenCentral()
+        //mavenLocal()
+        //mavenCentral()
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
-        mavenRepo "http://download.java.net/maven/2/"
+        //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
-
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        // specify dependencies here under either 'build', 'compile', 'runtime' or 'test' scopes eg.
 
-        compile "commons-lang:commons-lang:2.6"
-//        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
-        //            excludes 'commons-logging', 'xml-apis', 'groovy', 'log4j'
-        //        }
-        //compile "net.java.dev.jna:jna:3.3.0"
-        //compile "org.swinglabs:swingx:1.6.1"
-        //compile group:"net.java.dev.jna", name:"jna", version:"3.3.0", classifier:"platform"
+        // runtime 'mysql:mysql-connector-java:5.1.5'
     }
 }
 
@@ -140,17 +182,14 @@ log4j = {
         console name: 'stdout', layout: pattern(conversionPattern: '%d [%t] %-5p %c - %m%n')
     }
 
-    error 'org.codehaus.griffon'
+    error 'org.codehaus.griffon',
+          'org.springframework',
+          'org.apache.karaf',
+          'groovyx.net'
+    warn  'griffon'
 }
 
-griffon {
-    doc {
-        logo = '<a href="http://griffon.codehaus.org" target="_blank"><img alt="The Griffon Framework" src="../img/griffon.png" border="0"/></a>'
-        sponsorLogo = "<br/>"
-        footer = "<br/><br/>Made with Griffon (0.9.3-beta-1)"
-    }
-}
 
-app.archetype = 'default'
 app.fileType = '.groovy'
+
 app.defaultPackageName = 'buildLight'

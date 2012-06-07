@@ -27,7 +27,7 @@ widget(
         new JCenteredDialog(this.app.views.BuildLight.mainFrame),
         contentPane: optionPane(
                 messageType: JOptionPane.PLAIN_MESSAGE,
-                message: app.i18n.getMessage('buildLight.settings.server.testing'),
+                message: app.getMessage('buildLight.settings.server.testing'),
                 options: [],
                 border: BorderFactory.createLineBorder(Color.lightGray)
         ),
@@ -47,7 +47,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.type')
+            text: app.getMessage('buildLight.settings.server.type')
     )
 
     comboBox(
@@ -58,7 +58,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.url')
+            text: app.getMessage('buildLight.settings.server.url')
     )
 
     textField(
@@ -68,7 +68,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.frequency')
+            text: app.getMessage('buildLight.settings.server.frequency')
     )
 
     widget(
@@ -80,7 +80,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.seconds'),
+            text: app.getMessage('buildLight.settings.server.seconds'),
             constraints: 'wrap'
     )
 
@@ -88,7 +88,7 @@ panel(
 
     checkBox(
             id: 'needAuth',
-            label: app.i18n.getMessage('buildLight.settings.server.useAuth'),
+            label: app.getMessage('buildLight.settings.server.useAuth'),
             constraints: 'wrap, grow, span 2',
             selected: bind('needAuth', source: model, mutual: true,
                     converter: toggleLoginFields,
@@ -97,7 +97,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.userName')
+            text: app.getMessage('buildLight.settings.server.userName')
     )
 
     widget(
@@ -106,7 +106,7 @@ panel(
     )
 
     label(
-            text: app.i18n.getMessage('buildLight.settings.server.password')
+            text: app.getMessage('buildLight.settings.server.password')
     )
 
     widget(

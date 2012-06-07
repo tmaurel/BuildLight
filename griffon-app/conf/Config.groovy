@@ -5,15 +5,15 @@ log4j = {
         console name: 'stdout', layout: pattern(conversionPattern: '%d [%t] %-5p %c - %m%n')
     }
 
-    error 'org.codehaus.griffon'
+    error  'org.codehaus.griffon'
 
-    info 'griffon.util',
-            'griffon.core',
-            'griffon.swing',
-            'griffon.app',
-            'org.apache.http'
-
+    info   'griffon.util',
+           'griffon.core',
+           'griffon.@application.toolkit@',
+           'griffon.app'
 }
 
 
-griffon.rest.injectInto = ["controller"]
+i18n.provider = 'i18n'
+i18n.basename = 'messages'
+i18n.basenames = ['messages']

@@ -5,7 +5,7 @@ import javax.swing.JOptionPane
 
 testServerAction = action(
         id: 'testServerAction',
-        name: app.i18n.getMessage('buildLight.settings.server.test'),
+        name: app.getMessage('buildLight.settings.server.test'),
         closure: {
             def waitbox = view.waitBox
             waitbox.pack()

@@ -41,11 +41,11 @@ def mainFrame = application(title: 'BuildLight',
             constraints: 'grow, center'
     ) {
 
-        panel(title: app.i18n.getMessage('buildLight.settings.general')) {
+        panel(title: app.getMessage('buildLight.settings.general')) {
             migLayout(layoutConstraints: 'fill')
 
             label(
-                    text: app.i18n.getMessage('buildLight.settings.general.label'),
+                    text: app.getMessage('buildLight.settings.general.label'),
                     constraints: 'growy, wrap, align center'
             )
 
@@ -58,7 +58,7 @@ def mainFrame = application(title: 'BuildLight',
                 )
 
                 label(
-                        text: app.i18n.getMessage('buildLight.current.status'),
+                        text: app.getMessage('buildLight.current.status'),
                         constraints: 'grow'
                 )
 
@@ -82,7 +82,7 @@ def mainFrame = application(title: 'BuildLight',
                                     color = Integer.toHexString(Color.gray.RGB)
                                     break
                             }
-                            "<html><font color=\"#${color.substring(2, color.length())}\">${app.i18n.getMessage("buildLight.current.status.$it")}</font></html>"
+                            "<html><font color=\"#${color.substring(2, color.length())}\">${app.getMessage("buildLight.current.status.$it")}</font></html>"
                         }),
                         constraints: 'grow, wrap'
                 )
@@ -93,7 +93,7 @@ def mainFrame = application(title: 'BuildLight',
 
                 checkBox(
                         id: 'disableRange',
-                        label: app.i18n.getMessage('buildLight.settings.general.disable.range'),
+                        label: app.getMessage('buildLight.settings.general.disable.range'),
                         constraints: 'wrap, grow, span 2',
                         selected: bind('disableRange', source: model, mutual: true,
                                 converter: toggleDisableFields,
@@ -102,7 +102,7 @@ def mainFrame = application(title: 'BuildLight',
                 )
 
                 label(
-                        text: app.i18n.getMessage('buildLight.settings.general.disable.from')
+                        text: app.getMessage('buildLight.settings.general.disable.from')
                 )
 
                 widget(
@@ -111,7 +111,7 @@ def mainFrame = application(title: 'BuildLight',
                 )
 
                 label(
-                    text: app.i18n.getMessage('buildLight.settings.general.disable.until')
+                    text: app.getMessage('buildLight.settings.general.disable.until')
                 )
 
                 widget(
@@ -121,12 +121,12 @@ def mainFrame = application(title: 'BuildLight',
             }
         }
 
-        panel(title: app.i18n.getMessage('buildLight.settings.server')) {
+        panel(title: app.getMessage('buildLight.settings.server')) {
             borderLayout()
             widget(id: 'serverConfigContainer', buildMVCGroup('CIServer').view.root)
         }
 
-        panel(title: app.i18n.getMessage('buildLight.settings.light')) {
+        panel(title: app.getMessage('buildLight.settings.light')) {
             borderLayout()
             widget(id: 'lightConfigContainer', buildMVCGroup('Light').view.root)
         }
